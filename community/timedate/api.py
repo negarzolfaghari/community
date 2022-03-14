@@ -25,9 +25,10 @@ class Taketimeviewset(viewsets.ModelViewSet):
         _time=data.get('time')
         _date=data.get('date')
         datetime,created=models.TakeTime.objects.get_or_create(time=_time, date=_date,defaults={"day":day_of_week,"is_active":True})
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
+        # serializer = self.get_serializer(data=data)
+        # serializer.is_valid(raise_exception=True)
+        # self.perform_create(serializer)
+        serializer =self.get_serializer(datetime)
         headers = self.get_success_headers(serializer.data)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         
