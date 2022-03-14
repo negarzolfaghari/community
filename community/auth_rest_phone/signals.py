@@ -10,9 +10,9 @@ from django.conf import settings
 User = get_user_model()
 
 # New user has registered.
-user_registered = Signal(providing_args=["user", "request"])
+user_registered = Signal()
 # User has activated his or her account.
-user_activated = Signal(providing_args=["user", "request"])
+user_activated = Signal()
 
 
 # def contact_changed(sender, **kwargs):

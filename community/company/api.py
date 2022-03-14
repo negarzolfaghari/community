@@ -4,14 +4,15 @@ from datetime import datetime
 from unittest import result
 from django.forms import ValidationError
 from rest_framework import response,status
-from rest_framework import viewsets,views
+from rest_framework import viewsets,views,permissions
 from .models import Company
 from info import models as pmodels
 from . import serializers
+from role_manager.permissions import HasGroupRolePermission
 class Companyviewset(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class=serializers.CompanySerializer
-    # permission_classes=((IsSuperUserOrReadOnly,))
+    permission_classes=[permissions.IsAuthenticated, HasGroupRolePermission]
     def create(self, request, *args, **kwargs):
         data =request.data
         user={}
@@ -30,6 +31,15 @@ class Companyviewset(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    def get_serializer_context(self):
+        return{
+            'request':self.request,
+            'format':self.format_kwarg,
+            'view':self,
+            'groups':'comp',
+
+        }
+        
 
 
 class ReportApiView(views.APIView):

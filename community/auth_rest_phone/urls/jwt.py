@@ -1,4 +1,5 @@
-from django.conf.urls import url
+from django.urls import re_path as url
+
 from rest_framework_simplejwt import views
 
 from auth_rest_phone.jwt.views import CustomTokenObtainPairView

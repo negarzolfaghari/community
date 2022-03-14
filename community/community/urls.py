@@ -42,6 +42,9 @@ urlpatterns = [
     path('company/',include('company.urls')),
     path('ticket/',include('ticket.urls')),
     path('timedate/',include('timedate.urls')),
+    path('role_manager/', include('role_manager.urls')),
+    path('auth_rest_phone/',include('auth_rest_phone.urls')),
+    path('auth_rest_phone/',include('auth_rest_phone.urls.jwt')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -1,15 +1,17 @@
 from rest_framework import response,status,exceptions
 from rest_framework.parsers import FormParser,MultiPartParser,FileUploadParser
 from auth_rest_phone import models as amodels
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .models import Thread
 from .models import Message
+from role_manager.permissions import HasGroupRolePermission
 
 from . import serializers
 from ticket import models
 class Threadviewset(viewsets.ModelViewSet):
     queryset = Thread.objects.all()
     serializer_class=serializers.ThreadSerializer
+    permission_classes=[permissions.IsAuthenticated, HasGroupRolePermission]
 
 
     def create(self, request, *args, **kwargs):
@@ -27,6 +29,9 @@ class Threadviewset(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+
 
 
 
