@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include,re_path
+from django.urls import re_path as url
 
 from rest_framework import permissions
 from drf_yasg2.views import get_schema_view
@@ -45,6 +46,7 @@ urlpatterns = [
     path('role_manager/', include('role_manager.urls')),
     path('auth_rest_phone/',include('auth_rest_phone.urls')),
     path('auth_rest_phone/',include('auth_rest_phone.urls.jwt')),
+    url(r'api/captcha/', include('rest_captcha.urls')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
