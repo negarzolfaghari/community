@@ -8,7 +8,8 @@ router=routers.DefaultRouter()
 router.register(r'taketime',api.Taketimeviewset)
 urlpatterns=[
     path('list_time/',api.ListTimeAPIView.as_view()),
-    path('select_time/',api.SelectApiView.as_view()),
+    path('reserve_time/',api.ReserveAPIView.as_view()),
+    # path('select_time/',api.SelectApiView.as_view()),
     path('',include(router.urls)),
     
 

@@ -68,20 +68,36 @@ class ListTimeAPIView(views.APIView):
         return response.Response(moorning_after_ser.data)
 
         
-class SelectApiView(views.APIView):
+# class SelectApiView(views.APIView):
+#     def post(self,request):
+#         time_id=request.query_params.get("time_id",0)
+#         if time_id==0:
+#             raise ValidationError(code="time_id is required",datail="please enter time_id")
+#         else :
+#             time=models.TakeTime.objects.filter(id=time_id)
+#             time_ser=serializers.TaketimeSerializer(time,many=True)
+#             time_ser.data[0]['is_active']=False
+#             time_ser.data[0]['user1']=request.user.id
+#             print(time_ser.data[0])
+#             return response.Response(time_ser.data)
+
+class ReserveAPIView(views.APIView):
     def post(self,request):
         time_id=request.query_params.get("time_id",0)
+        user=request.user.id
         if time_id==0:
             raise ValidationError(code="time_id is required",datail="please enter time_id")
         else :
-            time=models.TakeTime.objects.filter(id=time_id)
-            time_ser=serializers.TaketimeSerializer(time,many=True)
-            time_ser.data[0]['is_active']=False
-            time_ser.data[0]['user1']=request.user.id
-            print(time_ser.data[0])
-            return response.Response(time_ser.data)
+            time=models.TakeTime.objects.filter(id=time_id,is_active=True).first()
+            if time:
+                time_ser=serializers.TaketimeSerializer(time,data={"is_active":False,"user":user},partial=True)
+                time_ser.is_valid()
+                time_ser.save()
+                return response.Response(time_ser.data)
+            else:
+                return response.Response({"code":"time_list_empty"},status=status.HTTP_404_NOT_FOUND)    
+        
 
-            
             
 
     
